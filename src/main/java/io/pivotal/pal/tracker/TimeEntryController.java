@@ -4,25 +4,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.boot.actuate.metrics.GaugeService;
+
 import java.util.List;
 
 @RestController
+@RequestMapping("/time-entries")
 public class TimeEntryController {
 
+    private final CounterService counter;
+    private final GaugeService gauge;
     private TimeEntryRepository timeEntryRepository;
 
-    public TimeEntryController(TimeEntryRepository timeEntryRepository) {
+    public TimeEntryController(TimeEntryRepository timeEntryRepository ,CounterService counter,
+                               GaugeService gauge) {
         this.timeEntryRepository=timeEntryRepository;
+        this.counter = counter;
+        this.gauge = gauge;
     }
 
-    @PostMapping("/time-entries")
+    @PostMapping
     public ResponseEntity<TimeEntry> create(@RequestBody TimeEntry timeEntry){
         ResponseEntity<TimeEntry> response = new ResponseEntity<TimeEntry>(timeEntryRepository.create(timeEntry), HttpStatus.CREATED);
         return response;
 
     }
 
-    @GetMapping("/time-entries/{timeEntryId}")
+    @GetMapping("{timeEntryId}")
     public ResponseEntity<TimeEntry> read(@PathVariable Long timeEntryId){
         TimeEntry timeEntry = timeEntryRepository.find(timeEntryId);
         ResponseEntity<TimeEntry> response = null;
@@ -36,14 +46,14 @@ public class TimeEntryController {
     }
 
 
-    @GetMapping("/time-entries")
+    @GetMapping
     public ResponseEntity<List<TimeEntry>> list(){
         ResponseEntity<List<TimeEntry>> response = new ResponseEntity<List<TimeEntry>>(timeEntryRepository.list(), HttpStatus.OK);
         return response;
 
     }
 
-    @PutMapping("/time-entries/{timeEntryId}")
+    @PutMapping("{timeEntryId}")
     public ResponseEntity<TimeEntry> update(@PathVariable Long timeEntryId, @RequestBody TimeEntry timeEntry){
         ResponseEntity<TimeEntry> response = null;
         System.out.println("id ==================================== "+timeEntryId);
@@ -60,7 +70,7 @@ public class TimeEntryController {
     }
 
 
-    @DeleteMapping("/time-entries/{timeEntryId}")
+    @DeleteMapping("{timeEntryId}")
     public ResponseEntity<TimeEntry> delete(@PathVariable Long timeEntryId){
         ResponseEntity<TimeEntry> response = null;
         timeEntryRepository.delete(timeEntryId);
