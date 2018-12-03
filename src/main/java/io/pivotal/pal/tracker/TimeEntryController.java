@@ -61,7 +61,6 @@ public class TimeEntryController {
     @PutMapping("{timeEntryId}")
     public ResponseEntity<TimeEntry> update(@PathVariable Long timeEntryId, @RequestBody TimeEntry timeEntry){
         ResponseEntity<TimeEntry> response = null;
-        System.out.println("id ==================================== "+timeEntryId);
         TimeEntry updated = timeEntryRepository.update(timeEntryId, timeEntry);
         if(updated == null) {
             counter.increment("TimeEntry.updated");

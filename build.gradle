@@ -17,6 +17,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jdbc")
     compile("mysql:mysql-connector-java:6.0.6")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-security")
 }
 
 
@@ -24,12 +25,14 @@ bootRun.environment([
         "WELCOME_MESSAGE": "hello",
         "SPRING_DATASOURCE_URL": "jdbc:mysql://localhost:3306/tracker_dev?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false",
         "MANAGEMENT_SECURITY_ENABLED": false,
+        "HTTPS_DISABLED": true,
 ])
 
 test.environment([
         "WELCOME_MESSAGE": "Hello from test",
         "SPRING_DATASOURCE_URL": "jdbc:mysql://localhost:3306/tracker_test?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false",
         "MANAGEMENT_SECURITY_ENABLED": false,
+        "HTTPS_DISABLED": true,
 ])
 
 flyway {
